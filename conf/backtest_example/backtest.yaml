@@ -1,0 +1,52 @@
+strategies:
+  - strategy_name: strategy_example
+    strategy_so: ../lib/libstrategy_example.so  # 编译好的策略动态库
+    strategy_param_file: ../conf/strategy_example.json
+
+# 回测范围为[begin_date, end_date]之间的所有交易日
+backtest_period:
+  begin_date: 2024-09-05
+  end_date: 2024-09-05
+
+strategy_start_time:
+  night: '20:55'  # 夜盘策略启动时间，默认值20:50
+  day: '08:55'  # 日盘策略启动时间，默认值08:50
+
+sessions:
+# 夜盘交易时段
+  night:
+    - begin_time: '20:59'
+      end_time: '23:01'
+  # 日盘交易时段
+  day:
+    - begin_time: '09:00'
+      end_time: '10:15'
+    - begin_time: '10:30'
+      end_time: '11:30'
+    - begin_time: '13:30'
+      end_time: '15:01'
+
+initial_capital: 1000000  # 起始资金
+
+# 合约表路径
+contract_files:
+  - ../../data/contract/contracts_%Y-%m-%d.csv
+
+holiday_directory: ../../data/holiday  # xydata交易日历路径
+
+# 行情数据配置
+data_feed:
+  type: csv_data_feed
+  data_directory: ../../data/depth  # xydata csv格式的快照数据目录
+
+matching_engine:
+  type: emu_matching_engine  # emu为排队撮合
+
+# 手续费配置
+fee:
+  - instr: 'FUT_SHFE_rb.+?'
+    type: percentage
+    rate: 0.0001
+
+# 滑点
+slippage: 0

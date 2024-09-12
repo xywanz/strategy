@@ -1,0 +1,6 @@
+build/
+xyts-strategy-sdk/
+.vscode/
+third_party/
+*autogen.json
+*param_manager.h
