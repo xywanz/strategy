@@ -1,0 +1,10 @@
+# 配置一些插件
+slow_task_manager:
+  slow_tasks:
+    - type: market_data_db_writer  # 会将当日行情实时写入db，以供策略通过GetTodayMarketData来查询
+
+market_data_filters:
+  - type: duplicate_filter  # 多个行情源择优去重
+    errata_ms: 50
+  - type: timeout_filter  # 丢弃延迟太久的行情
+    timeout_ms: 3000

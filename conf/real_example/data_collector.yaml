@@ -1,0 +1,4 @@
+# handlers:
+#   - type: wechat_sender
+#     wechat_robot_key: aaaaaaaa-bbbb-cccc-dddd-123456789012
+#   - type: xymonitor_sender

@@ -1,0 +1,9 @@
+name: ctp
+enable: true
+enable_data_recorder: true
+dll_path: ../lib/libctp_data_feed_api.so
+ctp_dll_path: ../lib/libthostmduserapi_se.so
+# front_addr: tcp://180.168.146.187:10211
+front_addr: tcp://180.168.146.187:10131  # 7x24
+subscription_list:
+  - '.+?'
