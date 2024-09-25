@@ -14,5 +14,13 @@
   "lower_line": {
     "type": "double",
     "value": -60
+  },
+  "max_position": {
+    "type": "int",
+    "value": 2
+  },
+  "stop_loss": {
+    "type": "double",
+    "value": -1000.0
   }
 }

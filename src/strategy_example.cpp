@@ -27,6 +27,10 @@ class StrategyExample final : public Strategy {
   void OnOrder(const OrderResponse& order) final;
 
  private:
+  std::string FormatTs(std::chrono::microseconds ts) {
+    return xyu::datetime::datetime::fromtimestamp(ts).strftime("%Y-%m-%d %H:%M:%S.%f");
+  }
+
   StrategyContext* ctx_;                // 用于保存StrategyContext
   StrategyExampleParamManager* param_;  // 策略参数
 
@@ -51,6 +55,17 @@ StrategyExample::StrategyExample(StrategyContext* ctx)
 
   // 订阅leg1和leg2的行情和持仓信息
   ctx_->SubscribeMarketData({leg1_contract_->instr, leg2_contract_->instr});
+
+  // 每30s打印一下PnL，如果亏损达到阈值则发送告警并停止策略
+  ctx_->AddPeriodicCallback(std::chrono::seconds{30}, [this](auto) {
+    double pnl = ctx_->GetPnl();
+    LOG_INFO("{}|PnL: {:.2f}", FormatTs(ctx_->GetWallTime()), pnl);
+    if (pnl <= param_->get_stop_loss()) {
+      ctx_->SendAlarm(
+          fmt::format("Stop loss. strategy:{} pnl:{:.2f}", ctx_->GetStrategyName(), pnl));
+      ctx_->Stop();
+    }
+  });
 }
 
 StrategyExample::~StrategyExample() {
@@ -76,18 +91,17 @@ void StrategyExample::OnDepth(const DepthData& depth) {
       return;
     }
     double spread = leg1_mid_price_ - leg2_mid_price_;
-    LOG_INFO("{}|spread = {:.2f}",
-             xyu::datetime::datetime::fromtimestamp(depth.exchange_timestamp).str(), spread);
+    LOG_INFO("{}|spread = {:.2f}", FormatTs(depth.exchange_timestamp), spread);
     auto pos = ctx_->GetLogicalPosition(leg1_contract_->contract_id);
     if (spread >= param_->get_upper_line()) {
       // 超过上轨，如果仓位还没满做空spread
-      if (pos.volume > -1) {
+      if (pos.volume > -param_->get_max_position()) {
         ctx_->BuyMarket(leg2_contract_->contract_id, 1);
         ctx_->SellMarket(leg1_contract_->contract_id, 1);
       }
     } else if (spread <= param_->get_lower_line()) {
       // 跌破下轨，如果仓位还没满则做多spread
-      if (pos.volume < 1) {
+      if (pos.volume < param_->get_max_position()) {
         ctx_->SellMarket(leg2_contract_->contract_id, 1);
         ctx_->BuyMarket(leg1_contract_->contract_id, 1);
       }
@@ -98,13 +112,15 @@ void StrategyExample::OnDepth(const DepthData& depth) {
 void StrategyExample::OnOrder(const OrderResponse& order) {
   const auto* contract =
       order.contract_id == leg1_contract_->contract_id ? leg1_contract_ : leg2_contract_;
-  LOG_INFO("{} {}{} {} {} px:{:.2f} fill/total:{}/{} order_id:{}", contract->instr, order.direction,
-           order.position_effect, order.status, order.error_code, order.price,
-           order.accum_trade_volume, order.original_volume, order.order_id);
+  LOG_INFO("{}|{} {}{} {} {} px:{:.2f} fill/total:{}/{} order_id:{} client_order_id:{}",
+           FormatTs(ctx_->GetWallTime()), contract->instr, order.direction, order.position_effect,
+           order.status, order.error_code, order.price, order.accum_trade_volume,
+           order.original_volume, order.order_id);
 
   if (order.current_trade_volume > 0) {
-    LOG_INFO("{} {}{} {:.2f}@{}", contract->instr, order.direction, order.position_effect,
-             order.current_trade_price, order.current_trade_volume);
+    LOG_INFO("{}|{} {}{} {:.2f}@{}", FormatTs(ctx_->GetWallTime()), contract->instr,
+             order.direction, order.position_effect, order.current_trade_price,
+             order.current_trade_volume);
   }
 }
 
