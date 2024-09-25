@@ -35,8 +35,8 @@ contract_files:
 holiday_directory: ../../data/holiday  # xydata交易日历路径
 
 # 行情数据配置
-data_feed:
-  type: csv_data_feed
+data_replayer:
+  type: csv_data_replayer
   data_directory: ../../data/depth  # xydata csv格式的快照数据目录
 
 matching_engine:
