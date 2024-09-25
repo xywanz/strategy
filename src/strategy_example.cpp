@@ -27,7 +27,7 @@ class StrategyExample final : public Strategy {
   void OnOrder(const OrderResponse& order) final;
 
  private:
-  std::string FormatTs(std::chrono::microseconds ts) {
+  static std::string FormatTs(std::chrono::microseconds ts) {
     return xyu::datetime::datetime::fromtimestamp(ts).strftime("%Y-%m-%d %H:%M:%S.%f");
   }
 
