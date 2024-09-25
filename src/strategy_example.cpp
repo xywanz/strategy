@@ -110,17 +110,16 @@ void StrategyExample::OnDepth(const DepthData& depth) {
 }
 
 void StrategyExample::OnOrder(const OrderResponse& order) {
-  const auto* contract =
-      order.contract_id == leg1_contract_->contract_id ? leg1_contract_ : leg2_contract_;
+  const auto* contract = ContractTable::At(order.contract_id);
+  auto now = ctx_->GetWallTime();
   LOG_INFO("{}|{} {}{} {} {} px:{:.2f} fill/total:{}/{} order_id:{} client_order_id:{}",
-           FormatTs(ctx_->GetWallTime()), contract->instr, order.direction, order.position_effect,
-           order.status, order.error_code, order.price, order.accum_trade_volume,
-           order.original_volume, order.order_id);
+           FormatTs(now), contract->instr, order.direction, order.position_effect, order.status,
+           order.error_code, order.price, order.accum_trade_volume, order.original_volume,
+           order.order_id);
 
   if (order.current_trade_volume > 0) {
-    LOG_INFO("{}|{} {}{} {:.2f}@{}", FormatTs(ctx_->GetWallTime()), contract->instr,
-             order.direction, order.position_effect, order.current_trade_price,
-             order.current_trade_volume);
+    LOG_INFO("{}|{} {}{} {:.2f}@{}", FormatTs(now), contract->instr, order.direction,
+             order.position_effect, order.current_trade_price, order.current_trade_volume);
   }
 }
 
