@@ -1,0 +1,26 @@
+{
+  "leg1_instr": {
+    "type": "string",
+    "value": "FUT_SHFE_rb-202501"
+  },
+  "leg2_instr": {
+    "type": "string",
+    "value": "FUT_SHFE_hc-202501"
+  },
+  "upper_line": {
+    "type": "double",
+    "value": -50
+  },
+  "lower_line": {
+    "type": "double",
+    "value": -60
+  },
+  "max_position": {
+    "type": "int",
+    "value": 2
+  },
+  "stop_loss": {
+    "type": "double",
+    "value": -1000.0
+  }
+}
