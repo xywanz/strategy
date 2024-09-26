@@ -115,7 +115,7 @@ void StrategyExample::OnOrder(const OrderResponse& order) {
   LOG_INFO("{}|{} {}{} {} {} px:{:.2f} fill/total:{}/{} order_id:{} client_order_id:{}",
            FormatTs(now), contract->instr, order.direction, order.position_effect, order.status,
            order.error_code, order.price, order.accum_trade_volume, order.original_volume,
-           order.order_id);
+           order.order_id, order.client_order_id);
 
   if (order.current_trade_volume > 0) {
     LOG_INFO("{}|{} {}{} {:.2f}@{}", FormatTs(now), contract->instr, order.direction,
