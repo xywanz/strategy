@@ -25,6 +25,3 @@ rm -f xyts-strategy-sdk/conf/*autogen.json
 rsync -r conf/base/ xyts-strategy-sdk/conf
 rsync scripts/* xyts-strategy-sdk/bin/
 rsync -r conf/$conf_for_test/* xyts-strategy-sdk/conf/
-if [ -f "xyts-strategy-sdk/conf/strategy_startup.py" ]; then
-    mv xyts-strategy-sdk/conf/strategy_startup.py xyts-strategy-sdk/bin/
-fi
