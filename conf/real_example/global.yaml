@@ -1,12 +1,12 @@
 # global.yaml 必须有该配置文件
 
-# 可以配置多个合约文件
-# contract_file:  # 必填
+# 必填，配置合约文件，合约文件里包含了当日可交易的所有合约及其基础信息
+contract_file: ../conf/contracts.csv
+
+# 也可以配置多个合约文件
+# contract_file:
 #   - ../conf/fut_contracts.csv
 #   - ../conf/opt_contracts.csv
-
-# 也可以只配置一个文件
-contract_file: ../conf/contracts.csv
 
 xyts_db_address: ../data/xyts.db  # 必填
 trader_service_port: 10086  # 可选

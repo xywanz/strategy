@@ -15,9 +15,9 @@ risk_list:
     order_count_limit: 20000
     cancel_count_limit: 20000
     contract_order_count_limits:
-      'FUT_SHFE_.+?': 2050
+      '.+?': 2050
     contract_cancel_count_limits:
-      'FUT_SHFE_.+?': 2050
+      '.+?': 2050
   - type: general_position
     position_limits:
       '.+?': 20000
@@ -25,7 +25,7 @@ risk_list:
     position_limits:
       - strategy: '.+?'
         limits:
-          - 'FUT_.+?': 20
+          - '.+?': 20
 
 # 该账户下交易的合约列表
 tradable_list:
