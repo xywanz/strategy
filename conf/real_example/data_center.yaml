@@ -4,6 +4,7 @@ slow_task_manager:
     - type: market_data_db_writer  # 会将当日行情实时写入db，以供策略通过GetTodayMarketData来查询
 
 data_filters:
+  - type: my_data_filter
   - type: duplicate_filter  # 多个行情源择优去重
     errata_ms: 50
   - type: timeout_filter  # 丢弃延迟太久的行情

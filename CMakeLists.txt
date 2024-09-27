@@ -42,6 +42,7 @@ function(gen_param_header_file STRATEGY_NAME)
 endfunction(gen_param_header_file)
 
 add_subdirectory(src)
+add_subdirectory(extension)
 
 option(BUILD_TESTS "Build the tests" OFF)
 if(BUILD_TESTS)
