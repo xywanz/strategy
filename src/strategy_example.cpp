@@ -92,16 +92,16 @@ void StrategyExample::OnDepth(const DepthData& depth) {
     }
     double spread = leg1_mid_price_ - leg2_mid_price_;
     LOG_INFO("{}|spread = {:.2f}", FormatTs(depth.exchange_timestamp), spread);
-    auto pos = ctx_->GetLogicalPosition(leg1_contract_->contract_id);
+    auto position = ctx_->GetLogicalPosition(leg1_contract_->contract_id).position;
     if (spread >= param_->get_upper_line()) {
       // 超过上轨，如果仓位还没满做空spread
-      if (pos.volume > -param_->get_max_position()) {
+      if (position > -param_->get_max_position()) {
         ctx_->BuyMarket(leg2_contract_->contract_id, 1);
         ctx_->SellMarket(leg1_contract_->contract_id, 1);
       }
     } else if (spread <= param_->get_lower_line()) {
       // 跌破下轨，如果仓位还没满则做多spread
-      if (pos.volume < param_->get_max_position()) {
+      if (position < param_->get_max_position()) {
         ctx_->SellMarket(leg2_contract_->contract_id, 1);
         ctx_->BuyMarket(leg1_contract_->contract_id, 1);
       }
