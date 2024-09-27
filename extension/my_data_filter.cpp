@@ -1,5 +1,7 @@
+#include "fmt/format.h"
 #include "xyts/core/contract_table.h"
 #include "xyts/core/log.h"
+#include "xyts/data_collector/data_collector.h"
 #include "xyts/extension/data_filter/data_filter.h"
 #include "xyts/extension/data_filter/data_filter_factory.h"
 #include "yaml-cpp/yaml.h"
@@ -14,6 +16,9 @@ class MyDataFilter final : public DataFilter {
     const auto* contract = ContractTable::At(depth.contract_id);
     LOG_INFO("Recv depth data: instr:{} exch_ts:{} last_price:{}", contract->instr,
              depth.exchange_timestamp, depth.last_price);
+    DataCollector::Collect(
+        CollectedDataType::kDataCenter,
+        fmt::format("{},{},{}", contract->instr, depth.exchange_timestamp, depth.last_price));
     return true;
   }
 };
