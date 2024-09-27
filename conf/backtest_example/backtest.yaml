@@ -39,8 +39,15 @@ data_replayer:
   type: csv_data_replayer
   data_directory: ../../data/depth  # xydata csv格式的快照数据目录
 
+# data_replayer:
+#   type: my_data_replayer
+
 matching_engine:
   type: emu_matching_engine  # emu为排队撮合
+
+# 用demo里实现的matching engine
+# matching_engine:
+#   type: my_matching_engine
 
 # 手续费配置
 fee:
