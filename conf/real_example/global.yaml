@@ -10,6 +10,6 @@ contract_file: ../conf/contracts.csv
 
 xyts_db_address: ../data/xyts.db  # 必填
 trader_service_port: 10086  # 可选
-market_service_port: 10087  # 可选
+data_service_port: 10087  # 可选
 strategy_param_directory: ../conf  # 可选
 reduce_cpu_usage: true  # 可选，cpu核数足够、需要极低延迟的情况可以用false
