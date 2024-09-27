@@ -11,7 +11,6 @@
 #include "xyts/core/log.h"
 #include "xyts/data_collector/collected_data_handler.h"
 #include "xyts/data_collector/collected_data_handler_factory.h"
-#include "xyts/data_collector/data_collector.h"
 #include "yaml-cpp/yaml.h"
 
 namespace beast = boost::beast;
